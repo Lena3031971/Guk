@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Физика СПО. Сила упругости. Закон Гука</title>
+<style>
+  /* ================== БАЗОВЫЕ СТИЛИ ================== */
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(180deg, #eaf4fd 0%, #dcecfb 100%);
+    background-attachment: fixed;
+    color: #16324f;
+    padding: 26px 16px 70px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet { max-width: 1140px; margin: 0 auto; }
+
+  /* ================== ШАПКА ================== */
+  .sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 22px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+  }
+
+  .title-block h1 {
+    font-size: 26px;
+    line-height: 1.25;
+    color: #0b3d70;
+    margin: 0 0 6px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+
+  .title-block .subtitle {
+    font-size: 13px;
+    color: #5a7793;
+    margin: 0;
+  }
+
+  /* ---------- Блок регистрации ---------- */
+  .reg-card {
+    background: #ffffff;
+    border: 1px solid #d3e5f7;
+    border-radius: 14px;
+    padding: 14px 18px 12px;
+    min-width: 330px;
+    box-shadow: 0 6px 18px rgba(16, 72, 128, 0.09);
+  }
+
+  .reg-card h2 {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1a73e8;
+    margin: 0 0 10px;
+    font-weight: 700;
+  }
+
+  .reg-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .reg-row:last-child { margin-bottom: 0; }
+
+  .reg-row label {
+    width: 62px;
+    flex: 0 0 auto;
+    color: #44688a;
+    font-weight: 600;
+  }
+
+  .reg-row input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 7px 10px;
+    border: 1px solid #c9dcf0;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #16324f;
+    background: #fff;
+    transition: border-color .15s, box-shadow .15s;
+  }
+
+  .reg-row input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+  }
+
+  .reg-row input[readonly] {
+    background: #f2f8ff;
+    color: #5a7793;
+    cursor: default;
+  }
+
+  /* ================== СПРАВОЧНЫЙ БЛОК ================== */
+  .reference {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 22px 28px;
+    box-shadow: 0 8px 24px rgba(16, 72, 128, 0.09);
+    border: 1px solid #e2eefb;
+    margin-bottom: 26px;
+  }
+
+  .ref-formula {
+    font-family: 'Cambria Math', 'Georgia', 'Times New Roman', serif;
+    font-size: 34px;
+    color: #0b3d70;
+    margin: 0 0 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .ref-formula .var { font-style: italic; }
+
+  .ref-legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    font-size: 14px;
+    color: #26445f;
+  }
+
+  .ref-legend li { display: flex; align-items: baseline; gap: 6px; }
+
+  .ref-legend .sym {
+    font-family: 'Cambria Math', Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    color: #1a73e8;
+    font-size: 16px;
+  }
+
+  .ref-note {
+    margin: 12px 0 0;
+    font-size: 12.5px;
+    color: #6d8aa6;
+    font-style: italic;
+  }
+
+  .ref-figure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 8px;
+  }
+
+  /* ================== СЕТКА ЗАДАЧ ================== */
+  .tasks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  /* ---------- Карточка задачи ---------- */
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e2eefb;
+    border-radius: 16px;
+    padding: 16px 18px 18px;
+    box-shadow: 0 6px 18px rgba(16, 72, 128, 0.09);
+    transition: box-shadow .2s, border-color .2s;
+  }
+
+  .card:hover { box-shadow: 0 10px 26px rgba(16, 72, 128, 0.14); }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .num {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1a73e8;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 3px 8px rgba(26, 115, 232, 0.35);
+  }
+
+  .card-head h3 {
+    flex: 1 1 auto;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0b3d70;
+    line-height: 1.3;
+  }
+
+  .points {
+    flex: 0 0 auto;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #1a73e8;
+    background: #e8f2fe;
+    border-radius: 999px;
+    padding: 4px 10px;
+    white-space: nowrap;
+  }
+
+  .task-text {
+    margin: 0 0 12px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #26445f;
+  }
+
+  .field-label {
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: #7d97b1;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  /* ---------- Поле решения (тетрадная клетка) ---------- */
+  .solve {
+    width: 100%;
+    min-height: 138px;
+    resize: vertical;
+    padding: 7px 10px 7px 10px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 20px;
+    color: #16324f;
+    border: 1px solid #cfe0f0;
+    border-radius: 10px;
+    background-color: #fdfeff;
+    background-image:
+      linear-gradient(to right, #dbeaf8 1px, transparent 1px),
+      linear-gradient(to bottom, #dbeaf8 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 9px 7px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+
+  .solve::placeholder { color: #a6bdd2; font-style: italic; font-size: 13px; }
+
+  .solve:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.13);
+  }
+
+  /* ---------- Строка ответа ---------- */
+  .answer-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .answer-row .field-label {
+    margin: 0;
+    flex: 0 0 auto;
+    font-size: 12px;
+    color: #44688a;
+    letter-spacing: 0.05em;
+  }
+
+  .answer {
+    width: 110px;
+    padding: 7px 10px;
+    border: 1px solid #c9dcf0;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    text-align: center;
+    color: #16324f;
+    font-weight: 600;
+    transition: border-color .15s, box-shadow .15s;
+  }
+
+  .answer::placeholder { font-weight: 400; color: #a6bdd2; }
+
+  .answer:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.13);
+  }
+
+  .unit {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #5a7793;
+    white-space: nowrap;
+  }
+
+  .answer-hint {
+    font-size: 11.5px;
+    color: #93aac0;
+    white-space: nowrap;
+  }
+
+  /* ---------- Отклик по задаче ---------- */
+  .feedback {
+    display: none;
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 9px;
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 600;
+  }
+
+  .card.is-correct .feedback {
+    display: block;
+    background: #e9f9ef;
+    color: #1a7f45;
+    border-left: 4px solid #27ae60;
+  }
+
+  .card.is-wrong .feedback {
+    display: block;
+    background: #fdecec;
+    color: #b0322a;
+    border-left: 4px solid #e74c3c;
+  }
+
+  .card.is-correct .answer { border-color: #27ae60; background: #f5fdf8; }
+  .card.is-wrong .answer { border-color: #e74c3c; background: #fff8f8; }
+
+  .feedback .right-answer {
+    display: block;
+    margin-top: 3px;
+    font-weight: 500;
+    color: #4a6b86;
+  }
+
+  /* ================== КНОПКА ПРОВЕРКИ ================== */
+  .check-wrap { text-align: center; margin-top: 34px; }
+
+  .check-btn {
+    display: inline-block;
+    padding: 17px 54px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #2b8bf2 0%, #0b4ea2 100%);
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(26, 115, 232, 0.38);
+    transition: transform .15s ease, box-shadow .15s ease, filter .15s;
+  }
+
+  .check-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(26, 115, 232, 0.46);
+    filter: brightness(1.04);
+  }
+
+  .check-btn:active { transform: translateY(0); box-shadow: 0 6px 16px rgba(26, 115, 232, 0.35); }
+
+  /* ================== РЕЗУЛЬТАТЫ ================== */
+  .results {
+    display: none;
+    max-width: 760px;
+    margin: 26px auto 0;
+    background: #ffffff;
+    border-radius: 18px;
+    border-left: 7px solid #1a73e8;
+    padding: 24px 28px 26px;
+    box-shadow: 0 12px 32px rgba(16, 72, 128, 0.14);
+  }
+
+  .results.visible { display: block; animation: fadeUp .38s ease both; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .results h2 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    color: #0b3d70;
+    letter-spacing: 0.2px;
+  }
+
+  .result-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .result-line .label { color: #5a7793; }
+
+  .result-line .value { font-weight: 700; color: #0b3d70; font-size: 18px; }
+
+  .grade-badge {
+    display: inline-block;
+    padding: 5px 18px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .grade-5 { background: #e3f7ea; color: #1a7f45; }
+  .grade-4 { background: #e6f1fb; color: #1a5fb4; }
+  .grade-3 { background: #fff4e0; color: #b97600; }
+  .grade-2 { background: #fdeaea; color: #b0322a; }
+
+  .progress-track {
+    height: 9px;
+    border-radius: 999px;
+    background: #eaf2fa;
+    overflow: hidden;
+    margin: 4px 0 20px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #56a8f5, #1a73e8);
+    transition: width .6s cubic-bezier(.22,.8,.3,1);
+  }
+
+  .comment-block label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #7d97b1;
+    margin-bottom: 7px;
+  }
+
+  .comment-block textarea {
+    width: 100%;
+    min-height: 84px;
+    resize: vertical;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #16324f;
+    border: 1px solid #cfe0f0;
+    border-radius: 10px;
+    background: #fbfdff;
+  }
+
+  .comment-block textarea:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.13);
+  }
+
+  /* ================== МОТИВАЦИОННАЯ ПЛАШКА ================== */
+  .motivation-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 34px;
+  }
+
+  .motivation {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #ffffff;
+    border: 1px solid #d9e9f9;
+    border-left: 6px solid #1a73e8;
+    border-radius: 14px;
+    padding: 14px 22px 14px 18px;
+    box-shadow: 0 8px 20px rgba(16, 72, 128, 0.11);
+    max-width: 460px;
+  }
+
+  .motivation p {
+    margin: 0;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #0b3d70;
+    line-height: 1.4;
+  }
+
+  .motivation .atom { flex: 0 0 auto; animation: spin 22s linear infinite; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ================== АДАПТИВНОСТЬ ================== */
+  @media (max-width: 880px) {
+    .tasks { grid-template-columns: 1fr; }
+    .reference { grid-template-columns: 1fr; }
+    .ref-figure { padding-right: 0; justify-content: flex-start; }
+  }
+
+  @media (max-width: 620px) {
+    body { padding: 16px 10px 50px; }
+    .title-block h1 { font-size: 21px; }
+    .reg-card { min-width: 0; width: 100%; }
+    .sheet-header { flex-direction: column; }
+    .ref-formula { font-size: 27px; }
+    .check-btn { width: 100%; padding: 16px 20px; font-size: 16px; }
+    .motivation-wrap { justify-content: center; }
+  }
+
+  /* ================== ПЕЧАТЬ ================== */
+  @media print {
+    body { background: #fff; padding: 0; }
+    .check-btn, .motivation .atom { display: none; }
+    .card, .reference, .reg-card { box-shadow: none; border: 1px solid #ccc; }
+    .results { display: block !important; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <!-- ==================== ШАПКА ==================== -->
+  <header class="sheet-header">
+    <div class="title-block">
+      <h1>Физика СПО. Сила упругости. Закон Гука</h1>
+      <p class="subtitle">Интерактивный рабочий лист · Раздел «Динамика» · 6 задач · 12 баллов</p>
+    </div>
+
+    <div class="reg-card">
+      <h2>Регистрация</h2>
+      <div class="reg-row">
+        <label for="fio">ФИО:</label>
+        <input type="text" id="fio" placeholder="Иванов Иван Иванович" autocomplete="off">
+      </div>
+      <div class="reg-row">
+        <label for="group">Группа:</label>
+        <input type="text" id="group" placeholder="Ф-21" autocomplete="off">
+      </div>
+      <div class="reg-row">
+        <label for="dateField">Дата:</label>
+        <input type="text" id="dateField" readonly tabindex="-1">
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== СПРАВОЧНЫЙ БЛОК ==================== -->
+  <section class="reference">
+    <div>
+      <p class="ref-formula"><span class="var">F</span><sub>упр</sub> = <span class="var">k</span> · Δ<span class="var">x</span></p>
+      <ul class="ref-legend">
+        <li><span class="sym">F<sub>упр</sub></span> — сила упругости (Н)</li>
+        <li><span class="sym">k</span> — жёсткость (Н/м)</li>
+        <li><span class="sym">Δx</span> — удлинение / сжатие (м)</li>
+      </ul>
+      <p class="ref-note">Помни: 1 см = 0,01 м; 1 Н/м = 1 Н на 1 м деформации.</p>
+    </div>
+
+    <div class="ref-figure">
+      <!-- Схема: пружина с грузом (минимализм) -->
+      <svg width="190" height="180" viewBox="0 0 190 180" role="img" aria-label="Пружина с грузом">
+        <!-- опора -->
+        <line x1="18" y1="20" x2="172" y2="20" stroke="#0b3d70" stroke-width="4" stroke-linecap="round"/>
+        <g stroke="#8fb4d6" stroke-width="2" stroke-linecap="round">
+          <line x1="26" y1="20" x2="18" y2="30"/>
+          <line x1="50" y1="20" x2="42" y2="30"/>
+          <line x1="74" y1="20" x2="66" y2="30"/>
+          <line x1="98" y1="20" x2="90" y2="30"/>
+          <line x1="122" y1="20" x2="114" y2="30"/>
+          <line x1="146" y1="20" x2="138" y2="30"/>
+          <line x1="170" y1="20" x2="162" y2="30"/>
+        </g>
+
+        <!-- пружина -->
+        <path d="M95 20 L95 32
+                 q 22 6.7 0 13.4 q -22 6.7 0 13.4
+                 q 22 6.7 0 13.4 q -22 6.7 0 13.4
+                 q 22 6.7 0 13.4 q -22 6.7 0 13.4"
+              fill="none" stroke="#1a73e8" stroke-width="3.2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- подвес груза -->
+        <line x1="95" y1="112" x2="95" y2="124" stroke="#1a73e8" stroke-width="3.2" stroke-linecap="round"/>
+
+        <!-- груз -->
+        <rect x="63" y="124" width="64" height="44" rx="7"
+              fill="#e8f2fe" stroke="#1a73e8" stroke-width="3"/>
+        <text x="95" y="152" text-anchor="middle"
+              font-family="'Cambria Math', Georgia, serif" font-style="italic"
+              font-size="19" fill="#0b3d70">m</text>
+
+        <!-- стрелка силы упругости -->
+        <line x1="140" y1="140" x2="140" y2="104" stroke="#f39c12" stroke-width="2.6" stroke-linecap="round"/>
+        <polygon points="140,98 135,110 145,110" fill="#f39c12"/>
+        <text x="150" y="118" font-family="'Segoe UI', Arial, sans-serif"
+              font-size="12" font-weight="700" fill="#c47f00">F</text>
+        <text x="157" y="122" font-family="'Segoe UI', Arial, sans-serif"
+              font-size="9" fill="#c47f00">упр</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==================== ЗАДАЧИ ==================== -->
+  <main class="tasks" id="tasksContainer">
+
+    <!-- Задача 1 -->
+    <article class="card" data-task="1">
+      <div class="card-head">
+        <span class="num">1</span>
+        <h3>Растяжение пружины</h3>
+        <span class="points">2 балла</span>
+      </div>
+      <p class="task-text">Пружина растянулась на 6 см. Жёсткость пружины равна 200 Н/м. Найдите силу упругости, возникающую в пружине.</p>
+      <div class="field-label">Решение</div>
+      <textarea class="solve" placeholder="Запишите формулу, переведите единицы в СИ и выполните расчет"></textarea>
+      <div class="answer-row">
+        <span class="field-label">Ответ:</span>
+        <input class="answer" type="text" placeholder="число" autocomplete="off">
+        <span class="unit">Н</span>
+      </div>
+      <div class="feedback"></div>
+    </article>
+
+    <!-- Задача 2 -->
+    <article class="card" data-task="2">
+      <div class="card-head">
+        <span class="num">2</span>
+        <h3>Груз на пружине</h3>
+        <span class="points">2 балла</span>
+      </div>
+      <p class="task-text">К пружине жёсткостью 150 Н/м подвесили груз массой 0,6 кг. Найдите удлинение пружины. Ускорение свободного падения принять g = 10 м/с².</p>
+      <div class="field-label">Решение</div>
+      <textarea class="solve" placeholder="Запишите формулу, переведите единицы в СИ и выполните расчет"></textarea>
+      <div class="answer-row">
+        <span class="field-label">Ответ:</span>
+        <input class="answer" type="text" placeholder="число" autocomplete="off">
+        <span class="unit">м</span>
+        <span class="answer-hint">(или в см)</span>
+      </div>
+      <div class="feedback"></div>
+    </article>
+
+    <!-- Задача 3 -->
+    <article class="card" data-task="3">
+      <div class="card-head">
+        <span class="num">3</span>
+        <h3>Определение жёсткости</h3>
+        <span class="points">2 балла</span>
+      </div>
+      <p class="task-text">Под действием силы 40 Н пружина удлинилась на 8 см. Найдите жёсткость этой пружины.</p>
+      <div class="field-label">Решение</div>
+      <textarea class="solve" placeholder="Запишите формулу, переведите единицы в СИ и выполните расчет"></textarea>
+      <div class="answer-row">
+        <span class="field-label">Ответ:</span>
+        <input class="answer" type="text" placeholder="число" autocomplete="off">
+        <span class="unit">Н/м</span>
+      </div>
+      <div class="feedback"></div>
+    </article>
+
+    <!-- Задача 4 -->
+    <article class="card" data-task="4">
+      <div class="card-head">
+        <span class="num">4</span>
+        <h3>Сравнение двух пружин</h3>
+        <span class="points">2 балла</span>
+      </div>
+      <p class="task-text">Имеются две пружины жёсткостью 100 Н/м и 250 Н/м. Обе растягивают силой 50 Н. Одинаково ли их удлинение? Найдите оба удлинения и поясните ответ.</p>
+      <div class="field-label">Решение</div>
+      <textarea class="solve" placeholder="Запишите формулу, переведите единицы в СИ и выполните расчет"></textarea>
+      <div class="answer-row">
+        <span class="field-label">Ответ:</span>
+        <input class="answer" type="text" placeholder="два числа" autocomplete="off">
+        <span class="unit">м</span>
+        <span class="answer-hint">Δx₁ и Δx₂</span>
+      </div>
+      <div class="feedback"></div>
+    </article>
+
+    <!-- Задача 5 -->
+    <article class="card" data-task="5">
+      <div class="card-head">
+        <span class="num">5</span>
+        <h3>Резиновый жгут</h3>
+        <span class="points">2 балла</span>
+      </div>
+      <p class="task-text">Резиновый жгут растянули на 12 см, при этом сила упругости составила 60 Н. Найдите жёсткость жгута.</p>
+      <div class="field-label">Решение</div>
+      <textarea class="solve" placeholder="Запишите формулу, переведите единицы в СИ и выполните расчет"></textarea>
+      <div class="answer-row">
+        <span class="field-label">Ответ:</span>
+        <input class="answer" type="text" placeholder="число" autocomplete="off">
+        <span class="unit">Н/м</span>
+      </div>
+      <div class="feedback"></div>
+    </article>
+
+    <!-- Задача 6 -->
+    <article class="card" data-task="6">
+      <div class="card-head">
+        <span class="num">6</span>
+        <h3>Сжатие пружины</h3>
+        <span class="points">2 балла</span>
+      </div>
+      <p class="task-text">Пружина жёсткостью 300 Н/м сжата на 5 см. Найдите силу упругости. Как изменится эта сила, если сжать пружину на 8 см? Укажите оба значения силы.</p>
+      <div class="field-label">Решение</div>
+      <textarea class="solve" placeholder="Запишите формулу, переведите единицы в СИ и выполните расчет"></textarea>
+      <div class="answer-row">
+        <span class="field-label">Ответ:</span>
+        <input class="answer" type="text" placeholder="два числа" autocomplete="off">
+        <span class="unit">Н</span>
+        <span class="answer-hint">F₁ и F₂</span>
+      </div>
+      <div class="feedback"></div>
+    </article>
+
+  </main>
+
+  <!-- ==================== КНОПКА ПРОВЕРКИ ==================== -->
+  <div class="check-wrap">
+    <button class="check-btn" id="checkBtn" type="button">Проверить и выставить оценку</button>
+  </div>
+
+  <!-- ==================== РЕЗУЛЬТАТЫ ==================== -->
+  <section class="results" id="results" aria-live="polite">
+    <h2>Результаты проверки</h2>
+
+    <div class="result-line">
+      <span class="label">Набрано баллов:</span>
+      <span class="value"><span id="scoreValue">0</span> из 12</span>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="result-line">
+      <span class="label">Оценка:</span>
+      <span class="grade-badge" id="gradeBadge">—</span>
+    </div>
+
+    <div class="comment-block">
+      <label for="teacherComment">Комментарий преподавателя</label>
+      <textarea id="teacherComment" placeholder="Введите комментарий, замечания или рекомендации для студента..."></textarea>
+    </div>
+  </section>
+
+  <!-- ==================== МОТИВАЦИОННАЯ ПЛАШКА ==================== -->
+  <div class="motivation-wrap">
+    <div class="motivation">
+      <svg class="atom" width="38" height="38" viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="24" r="4.2" fill="#1a73e8"/>
+        <ellipse cx="24" cy="24" rx="20" ry="7.6" fill="none" stroke="#1a73e8" stroke-width="1.7"/>
+        <ellipse cx="24" cy="24" rx="20" ry="7.6" fill="none" stroke="#1a73e8" stroke-width="1.7"
+                 transform="rotate(60 24 24)"/>
+        <ellipse cx="24" cy="24" rx="20" ry="7.6" fill="none" stroke="#1a73e8" stroke-width="1.7"
+                 transform="rotate(120 24 24)"/>
+      </svg>
+      <p>Уверенность в знаниях — это шаг к большим победам!</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+     1. АВТОМАТИЧЕСКАЯ ПОДСТАНОВКА ТЕКУЩЕЙ ДАТЫ
+     ============================================================ */
+  (function setCurrentDate() {
+    var dateField = document.getElementById('dateField');
+    var now = new Date();
+    var dd = String(now.getDate()).padStart(2, '0');
+    var mm = String(now.getMonth() + 1).padStart(2, '0');
+    var yyyy = now.getFullYear();
+    dateField.value = dd + '.' + mm + '.' + yyyy;
+  })();
+
+  /* ============================================================
+     2. ЭТАЛОННЫЕ ОТВЕТЫ (рассчитаны внутри кода)
+     ------------------------------------------------------------
+     №1: F = k·Δx = 200 · 0,06 = 12 Н
+     №2: F = mg = 0,6·10 = 6 Н;  Δx = F/k = 6/150 = 0,04 м = 4 см
+     №3: k = F/Δx = 40 / 0,08 = 500 Н/м
+     №4: Δx₁ = 50/100 = 0,5 м (50 см); Δx₂ = 50/250 = 0,2 м (20 см) — разные
+     №5: k = F/Δx = 60 / 0,12 = 500 Н/м
+     №6: F₁ = 300 · 0,05 = 15 Н;  F₂ = 300 · 0,08 = 24 Н
+     ============================================================ */
+  var TASKS = {
+    1: {
+      variants: [[12]],
+      answerText: 'F упр = 200 Н/м · 0,06 м = 12 Н'
+    },
+    2: {
+      variants: [[0.04], [4]],                 // 0,04 м или 4 см
+      answerText: 'F = mg = 6 Н; Δx = F/k = 6/150 = 0,04 м (4 см)'
+    },
+    3: {
+      variants: [[500]],
+      answerText: 'k = F/Δx = 40 Н / 0,08 м = 500 Н/м'
+    },
+    4: {
+      variants: [[0.5, 0.2], [50, 20]],        // 0,5 м и 0,2 м (или 50 см и 20 см)
+      answerText: 'Δx₁ = 50/100 = 0,5 м (50 см); Δx₂ = 50/250 = 0,2 м (20 см). Удлинения разные: чем больше жёсткость, тем меньше деформация при той же силе'
+    },
+    5: {
+      variants: [[500]],
+      answerText: 'k = F/Δx = 60 Н / 0,12 м = 500 Н/м'
+    },
+    6: {
+      variants: [[15, 24]],
+      answerText: 'F₁ = 300 · 0,05 = 15 Н; F₂ = 300 · 0,08 = 24 Н. Сила увеличится в 1,6 раза (на 9 Н)'
+    }
+  };
+
+  var MAX_SCORE = 12;         // 6 задач × 2 балла
+  var POINTS_PER_TASK = 2;
+
+  /* ============================================================
+     3. УТИЛИТЫ РАСПОЗНАВАНИЯ И СРАВНЕНИЯ ЧИСЕЛ
+     ============================================================ */
+
+  /**
+   * Извлекает все числа из строки.
+   * Поддерживает запятую как десятичный разделитель ("0,04" -> 0.04).
+   */
+  function extractNumbers(raw) {
+    if (!raw) return [];
+    var normalized = String(raw).replace(/,/g, '.').replace(/−/g, '-');
+    var matches = normalized.match(/\d+(?:\.\d+)?/g);
+    if (!matches) return [];
+    return matches.map(Number).filter(function (n) { return isFinite(n); });
+  }
+
+  /** Сравнение с относительной погрешностью 3 % */
+  function isClose(actual, expected) {
+    var tolerance = Math.max(Math.abs(expected) * 0.03, 1e-9);
+    return Math.abs(actual - expected) <= tolerance;
+  }
+
+  /**
+   * Проверка одной задачи.
+   * Ответ считается верным, если в нём присутствуют ВСЕ числа
+   * хотя бы одного из допустимых вариантов ответа.
+   */
+  function checkTask(taskId, rawAnswer) {
+    var numbers = extractNumbers(rawAnswer);
+    if (numbers.length === 0) return false;
+
+    var variants = TASKS[taskId].variants;
+
+    for (var v = 0; v < variants.length; v++) {
+      var variant = variants[v];
+      var allFound = variant.every(function (expected) {
+        return numbers.some(function (got) { return isClose(got, expected); });
+      });
+      if (allFound) return true;
+    }
+    return false;
+  }
+
+  /* ============================================================
+     4. ОПРЕДЕЛЕНИЕ ОЦЕНКИ ПО ШКАЛЕ
+     ------------------------------------------------------------
+     12–10 — «Отлично»
+      9–7  — «Хорошо»
+      6–4  — «Удовлетворительно»
+      3–0  — «Неудовлетворительно»
+     ============================================================ */
+  function getGrade(score) {
+    if (score >= 10) return { text: 'Отлично',              cssClass: 'grade-5' };
+    if (score >= 7)  return { text: 'Хорошо',               cssClass: 'grade-4' };
+    if (score >= 4)  return { text: 'Удовлетворительно',    cssClass: 'grade-3' };
+    return             { text: 'Неудовлетворительно',  cssClass: 'grade-2' };
+  }
+
+  /* ============================================================
+     5. ОСНОВНАЯ ЛОГИКА ПРОВЕРКИ
+     ============================================================ */
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var checkBtn = document.getElementById('checkBtn');
+  var resultsBlock = document.getElementById('results');
+  var scoreValueEl = document.getElementById('scoreValue');
+  var gradeBadgeEl = document.getElementById('gradeBadge');
+  var progressFillEl = document.getElementById('progressFill');
+
+  function runCheck() {
+    var totalScore = 0;
+
+    cards.forEach(function (card) {
+      var taskId = card.getAttribute('data-task');
+      var answerInput = card.querySelector('.answer');
+      var feedbackEl = card.querySelector('.feedback');
+      var raw = answerInput.value.trim();
+
+      var isCorrect = checkTask(taskId, raw);
+
+      card.classList.remove('is-correct', 'is-wrong');
+
+      if (isCorrect) {
+        card.classList.add('is-correct');
+        totalScore += POINTS_PER_TASK;
+        feedbackEl.innerHTML =
+          '✓ Верно! +' + POINTS_PER_TASK + ' балла';
+      } else {
+        card.classList.add('is-wrong');
+        var reason = raw === ''
+          ? 'Ответ не введён.'
+          : 'Ответ неверный.';
+        feedbackEl.innerHTML =
+          '✗ ' + reason +
+          '<span class="right-answer">Правильный ответ: ' +
+          TASKS[taskId].answerText + '</span>';
+      }
+    });
+
+    /* --- Вывод результатов --- */
+    var grade = getGrade(totalScore);
+
+    scoreValueEl.textContent = totalScore;
+    gradeBadgeEl.textContent = grade.text;
+    gradeBadgeEl.className = 'grade-badge ' + grade.cssClass;
+
+    progressFillEl.style.width = (totalScore / MAX_SCORE * 100) + '%';
+
+    resultsBlock.classList.add('visible');
+
+    /* Плавная прокрутка к результатам */
+    resultsBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  checkBtn.addEventListener('click', runCheck);
+
+  /* Небольшое удобство: Ctrl+Enter в поле ответа запускает проверку */
+  document.addEventListener('keydown', function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      runCheck();
+    }
+  });
+
+})();
+</script>
+
+</body>
+</html>
